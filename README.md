@@ -3,7 +3,7 @@ Python, SSMS, Data model, StarNet, SSAS, PowerBI, SSDT, Association Rule Mining,
 
 A collection of crime data from the Atlanta Police Department's open data portal. Their link to download the total dataset has been down forawhile. This is an aggregation of city-wide data for every month between January 2009 and February 2017:
 http://opendata.atlantapd.org/
-The dataset includes 1/1/2009 - 2/28/2017. It is in csv form with 270688 rows.
+The dataset includes 1/1/2009 - 2/28/2017. It is in csv format with 270688 rows.
 
 
 Python was used to transform the orginal raw data into several dimension table, fact table , in order to build data warehouse for visualisation in Power BI.
