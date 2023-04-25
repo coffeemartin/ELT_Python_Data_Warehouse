@@ -1,0 +1,271 @@
+PRINT '';
+PRINT '*** Dropping Database';
+GO
+IF EXISTS (SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'DWCrime')
+DROP DATABASE DWCrime;
+GO
+PRINT '';
+PRINT '*** Creating Database';
+GO
+Create database DWCrime
+Go
+Use DWCrime
+Go
+
+
+PRINT '';
+PRINT '*** Creating Table DimCrimeType';
+GO
+USE DWCrime
+Create table DimCrimeType
+(
+CrimeID smallint primary key identity(1,1),
+Crime varchar(50) not null,
+CrimeAgainst varchar(10),
+)
+Go
+
+ BULK INSERT [dbo].[DimCrimeType] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_crime_type.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+
+PRINT '';
+PRINT '*** Creating Table DimDate';
+GO
+USE DWCrime
+Create table DimDate
+(
+DateKey int primary key not null,
+FullDate date not null,
+Day varchar(10) not null,
+Weekday_Weekend varchar(10) not null,
+Month char(3) not null,
+Quarter tinyint not null,
+Year smallint not null
+)
+Go
+
+
+BULK INSERT [dbo].[DimDate] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_date.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+
+
+PRINT '';
+PRINT '*** Creating Table';
+GO
+USE DWCrime
+Create table DimBeat
+(
+Beat_ID smallint primary key identity(1,1),
+Beat smallint,
+Zone smallint,
+City varchar(20),
+)
+Go
+
+ 
+ BULK INSERT [dbo].[DimBeat] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_beat.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+PRINT '';
+PRINT '*** Creating Table';
+GO
+USE DWCrime
+Create table DimCoord
+(
+Coordinate_ID int primary key identity(1,1),
+Lat Decimal(8,6) not null, 
+Long Decimal(9,6) not null,
+Location varchar(40) not null,
+)
+Go
+
+ 
+ BULK INSERT [dbo].[DimCoord] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_Coord.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+PRINT '';
+PRINT '*** Creating Table';
+GO
+USE DWCrime
+Create table DimLocType
+(
+LocType_ID smallint primary key identity(1,1),
+type varchar (30) not null, 
+)
+Go
+
+ 
+ BULK INSERT [dbo].[DimLocType] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_loc_type.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+
+PRINT '';
+PRINT '*** Creating Table';
+GO
+USE DWCrime
+Create table DimNbh
+(
+Nbh_ID smallint primary key identity(1,1),
+Neighborhood varchar(50),
+Npu char(1),
+County varchar (30),
+Npu_Poc_Pop_Pct varchar(20),
+State varchar (20),
+Country  varchar (20),
+)
+Go
+
+ 
+ BULK INSERT [dbo].[DimNbh] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_Nbh.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+PRINT '';
+PRINT '*** Creating Table';
+GO
+USE DWCrime
+Create table DimRoad
+(
+Road_ID int primary key identity(1,1),
+Road varchar(50),
+City varchar (20),
+)
+Go
+
+ 
+ BULK INSERT [dbo].[DimRoad] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\dim_Road.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    KEEPIDENTITY,
+    TABLOCK
+);
+
+
+PRINT '';
+PRINT '*** Creating Table FactCrime';
+GO
+USE DWCrime
+Create table FactCrime
+(RecordId int primary key identity(1,1),
+DateKey int not null,
+Coordinate_ID int,
+Beat_ID smallint,
+Nbh_ID smallint,
+Road_ID int,
+LocType_ID smallint,
+Crime_ID smallint not null,
+)
+Go
+
+
+ 
+ BULK INSERT [dbo].[FactCrime] FROM 'C:\Users\coffe\OneDrive\Desktop\Data Warehousing\Project 1\CrimeDW_Data\crime_fact.csv'
+ WITH (
+    CHECK_CONSTRAINTS,
+    --CODEPAGE='ACP',
+    DATAFILETYPE='widechar',
+    FIELDTERMINATOR='|',
+    ROWTERMINATOR='\n',
+    TABLOCK
+);
+
+
+AlTER TABLE FactCrime ADD CONSTRAINT 
+FK_Crime_ID FOREIGN KEY (Crime_ID) REFERENCES DimCrimeType(CrimeID);
+AlTER TABLE FactCrime ADD CONSTRAINT 
+FK_DateKey FOREIGN KEY (DateKey)REFERENCES DimDate(DateKey);
+AlTER TABLE FactCrime ADD CONSTRAINT 
+FK_Coordinate_ID FOREIGN KEY (Coordinate_ID)REFERENCES DimCoord(Coordinate_ID);
+AlTER TABLE FactCrime ADD CONSTRAINT 
+FK_Beat_ID FOREIGN KEY (Beat_ID)REFERENCES DimBeat(Beat_ID);
+AlTER TABLE FactCrime ADD CONSTRAINT 
+FK_Nbh_ID FOREIGN KEY (Nbh_ID)REFERENCES DimNbh(Nbh_ID);
+ALTER TABLE FactCrime ADD CONSTRAINT
+FK_Road_ID FOREIGN KEY (Road_ID) REFERENCES DimRoad(Road_ID);
+ALTER TABLE FactCrime ADD CONSTRAINT
+FK_LocType_ID FOREIGN KEY (LocType_ID) REFERENCES DimLocType(LocType_ID);
+GO
+
+
+
+
+
+
+
+CREATE VIEW Crime_Type_YM_Beat AS 
+SELECT YM + CAST (Beat AS varchar(5)) as Month_Beat_Key, YM, Beat, Crime
+FROM
+(SELECT DISTINCT SUBSTRING ( CAST (dbo.FactCrime.Datekey AS VARCHAR(8)), 1, 6) as YM, dbo.DimBeat.Beat, dbo.DimCrimeType.Crime
+FROM     dbo.FactCrime INNER JOIN
+                  dbo.DimBeat ON dbo.FactCrime.Beat_ID = dbo.DimBeat.Beat_ID INNER JOIN
+                  dbo.DimCrimeType ON dbo.FactCrime.Crime_ID = dbo.DimCrimeType.CrimeID ) AS QUERY1
+
+
+
+
+CREATE VIEW view_Transaction_YM_BEAT AS
+SELECT DISTINCT YM + CAST (Beat AS varchar(5)) as Month_Beat_Key, YM, Beat
+FROM
+(SELECT DISTINCT SUBSTRING ( CAST (dbo.FactCrime.Datekey AS VARCHAR(8)), 1, 6) as YM, dbo.DimBeat.Beat, dbo.DimCrimeType.Crime
+FROM     dbo.FactCrime INNER JOIN
+                  dbo.DimBeat ON dbo.FactCrime.Beat_ID = dbo.DimBeat.Beat_ID INNER JOIN
+                  dbo.DimCrimeType ON dbo.FactCrime.Crime_ID = dbo.DimCrimeType.CrimeID ) AS QUERY1
