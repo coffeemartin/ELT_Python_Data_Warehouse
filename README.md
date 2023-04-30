@@ -1,7 +1,7 @@
 # ELT_Python_Data_Warehouse
 Python, SSMS, Data model, SQL, StarNet, SSAS, PowerBI, SSDT, Association Rule Mining, ARCGIS, JSON
 
-A collection of crime data from the Atlanta Police Department's open data portal. Their link to download the total dataset has been down forawhile. This is an aggregation of city-wide data for every month between January 2009 and February 2017:
+A collection of crime data from the Atlanta Police Department's open data portal. This is an aggregation of city-wide data for every month between January 2009 and February 2017:
 http://opendata.atlantapd.org/
 The dataset includes 1/1/2009 - 2/28/2017. It is in csv format with 270688 rows.
 
