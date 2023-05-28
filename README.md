@@ -17,3 +17,8 @@ Load data into SSMS server, build MOLAP in SSAS, cube deployment, hierachy desgi
 
 Visualisation in PowerBI, association rule mining. Identify top rules.
 
+![Screenshot 2023-05-28 121024](https://github.com/coffeemartin/ELT_Python_Data_Warehouse/assets/73702415/b3d3d50e-2914-4107-a4ca-96b60945bd33)
+![Screenshot 2023-05-28 123716](https://github.com/coffeemartin/ELT_Python_Data_Warehouse/assets/73702415/4677bb7e-8a23-488b-93bb-dbd4423a4bc2)
+![Screenshot 2023-05-28 123727](https://github.com/coffeemartin/ELT_Python_Data_Warehouse/assets/73702415/23079fbc-d59a-4e17-9685-fab9942f32fe)
+![Screenshot 2023-05-28 123755](https://github.com/coffeemartin/ELT_Python_Data_Warehouse/assets/73702415/2122bff5-4346-4515-b8c3-3825b74c0c43)
+![Screenshot 2023-05-28 123808](https://github.com/coffeemartin/ELT_Python_Data_Warehouse/assets/73702415/d0008a12-17ed-4625-827c-6a528c1330bb)
